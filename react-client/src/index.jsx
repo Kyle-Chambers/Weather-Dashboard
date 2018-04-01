@@ -9,47 +9,61 @@ import {
 } from '../helpers/getWeather.js';
 
 
-class App extends React.Component {
+const iconStyle = {
+  fontSize: '200px',
+  textAlign: 'center',
+  color: 'grey'
+};
+
+class WeatherAtLocation extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
       // defaultWeatherInfo: {},
-      latAndLong: {
-        latitude: 'loading', 
-        longitude: 'loading'
-      },
+      latitude: 'loading', 
+      longitude: 'loading',
       temperature: 'loading',
       humidity: 'loading',
       location: 'loading',
       city: 'loading',
       windSpeed: 'loading',
+      iconId: null
     }
   }
 
   componentDidMount() {
+
     getLatitudeAndLongitude()
     .then((position) => {
+      let { latitude, longitude } = position;
       this.setState({
-        latAndLong: position
+        latitude,
+        longitude
       });
     })
     .then(() => {
-      let { latitude, longitude } = this.state.latAndLong;
 
-      getWeatherByLatitudeAndLongitude(latitude, longitude)
+      getWeatherByLatitudeAndLongitude(this.state.latitude, this.state.longitude)
+
       .then((info => {
+        console.log(info);
+
         let temperature = info.data.main.temp;
         let humidity = info.data.main.humidity;
         let location = info.data.name;
         let city = info.data.sys.country;
         let windSpeed = info.data.wind.speed;
+        let iconId = info.data.weather[0].id;
+
+        console.log()
 
         this.setState({
           temperature,
           humidity,
           location,
           city,
-          windSpeed
+          windSpeed,
+          iconId
         })
 
         console.log(this.state)
@@ -63,22 +77,65 @@ class App extends React.Component {
       console.log(err);
     });
 
+    ////////// <<<<<<<<<<<< HARD CODED LAT AND LONG UNCOMMENT CODE ABOVE TO GO BACK >>>>>>>>>>>>
+
+    // let { latitude, longitude } =  {latitude: 37.7771726, longitude: -122.4238155};
+
+    // this.setState({
+    //   latitude,
+    //   longitude
+    // })
+
+    // getWeatherByLatitudeAndLongitude(latitude, longitude)
+    // .then((info => {
+    //   console.log(info);
+
+    //   let temperature = info.data.main.temp;
+    //   let humidity = info.data.main.humidity;
+    //   let location = info.data.name;
+    //   let city = info.data.sys.country;
+    //   let windSpeed = info.data.wind.speed;
+    //   let iconId = info.data.weather[0].id;
+
+    //   console.log(iconId);
+
+    //   this.setState({
+    //     temperature,
+    //     humidity,
+    //     location,
+    //     city,
+    //     windSpeed,
+    //     iconId
+    //   })
+
+    //   console.log(this.state)
+    // }))
+    // .catch((err) => {
+    //   console.log(err);
+    // });
+
   }
 
   render () {
     return (
       <div>
+
         <h1>Weather</h1>
-        <p> Location: {this.state.temperature} </p>
+        <i style={iconStyle} className={`wi wi-owm-${this.state.iconId}`}></i>
+
+        <p>{this.state.iconId}</p>
+        <p> Location: {this.state.location}  </p>
+        <p> Location: {this.state.city} </p>
         <p> Temperature: {this.state.temperature}</p>
         <p> Humidity: {this.state.humidity}</p>
         <p> Wind Speed: {this.state.windSpeed}</p>
-        <p> Your latitude: {this.state.latAndLong.latitude}</p>
-        <p> Your longitude: {this.state.latAndLong.longitude}</p>
+        <p> Your latitude: {Math.floor(this.state.latitude)}</p>
+        <p> Your longitude: {Math.floor(this.state.longitude)}</p>
 
       </div>
     )
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('app'));
+ReactDOM.render(<WeatherAtLocation />, document.getElementById('app'));
+
