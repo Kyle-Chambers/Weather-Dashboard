@@ -13,17 +13,20 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      items: [],
-      weatherInfo: {},
+      // defaultWeatherInfo: {},
       latAndLong: {
-        latitude: null, 
-        longitude: null
+        latitude: 'loading', 
+        longitude: 'loading'
       },
+      temperature: 'loading',
+      humidity: 'loading',
+      location: 'loading',
+      city: 'loading',
+      windSpeed: 'loading',
     }
   }
 
   componentDidMount() {
-
     getLatitudeAndLongitude()
     .then((position) => {
       this.setState({
@@ -31,11 +34,30 @@ class App extends React.Component {
       });
     })
     .then(() => {
-      let { latitude, longitude } = this.state.latAndLong
+      let { latitude, longitude } = this.state.latAndLong;
+
       getWeatherByLatitudeAndLongitude(latitude, longitude)
       .then((info => {
-        console.log(info.data);
+        let temperature = info.data.main.temp;
+        let humidity = info.data.main.humidity;
+        let location = info.data.name;
+        let city = info.data.sys.country;
+        let windSpeed = info.data.wind.speed;
+
+        this.setState({
+          temperature,
+          humidity,
+          location,
+          city,
+          windSpeed
+        })
+
+        console.log(this.state)
       }))
+      .catch((err) => {
+        console.log(err);
+      });
+
     })
     .catch((err) => {
       console.log(err);
@@ -46,9 +68,14 @@ class App extends React.Component {
   render () {
     return (
       <div>
-        <h1>Item List</h1>
-        <p>{this.state.latAndLong.latitude}</p>
-        <List items={this.state.items}/>
+        <h1>Weather</h1>
+        <p> Location: {this.state.temperature} </p>
+        <p> Temperature: {this.state.temperature}</p>
+        <p> Humidity: {this.state.humidity}</p>
+        <p> Wind Speed: {this.state.windSpeed}</p>
+        <p> Your latitude: {this.state.latAndLong.latitude}</p>
+        <p> Your longitude: {this.state.latAndLong.longitude}</p>
+
       </div>
     )
   }
