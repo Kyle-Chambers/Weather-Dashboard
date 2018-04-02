@@ -1,0 +1,86 @@
+h1 {
+
+    font-size: 40px;
+    font-family: Arial;
+    color: grey
+}
+
+.main {
+    display: flex;
+    justify-content: center;
+    /* background-color: aqua; */
+}
+
+/* main info */
+
+.mainInfo {
+    padding-top: 208px;
+    width: 220px;
+    /* background-color: rgb(195, 110, 110); */
+}
+
+.temperature {
+    margin-top: 15px;
+    font-size: 120px;
+    font-family: Arial;
+    color: grey
+}
+
+.icon {
+    font-size: 150px;
+    fontFamily: Arial;
+    color: grey
+}
+
+
+.iconContainer {
+    
+}
+
+
+
+/* detailed info */
+
+
+.detailedInfo {
+    padding-top: 200px;
+    width: 400px;
+    float: left;
+    /* background-color: antiquewhite; */
+}
+
+
+p {
+    font-size: 28px;
+    margin-top: -6px;
+    font-family: Arial;
+    color: grey
+}
+
+/* 
+
+.location {
+
+}
+
+.country {
+
+}
+
+.coordinates {
+
+}
+
+.humidity{
+
+}
+
+.windSpeed {
+
+}
+
+.descriptor {
+
+} 
+
+*/
