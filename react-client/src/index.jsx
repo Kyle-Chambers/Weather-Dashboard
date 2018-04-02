@@ -24,140 +24,166 @@ class LocalWeather extends React.Component {
       country: 'loading',
       windSpeed: 'loading',
       iconId: null,
-      descriptor: 'loading'
+      descriptor: 'loading',
+      date: new Date(),
     }
+  }
+
+  tick() {
+    this.setState({
+      date: new Date()
+    });
   }
 
 
   componentDidMount() {
 
-    getLatitudeAndLongitude()
-    .then((position) => {
-      let { latitude, longitude } = position;
-      this.setState({
-        latitude,
-        longitude
-      });
-    })
-    .then(() => {
-      getWeatherByLatitudeAndLongitude(this.state.latitude, this.state.longitude)
-      .then((info => {
-        console.log(info);
-  
-        let temperature = Math.floor(info.data.main.temp);
-        let humidity = info.data.main.humidity;
-        let location = info.data.name;
-        let country = info.data.sys.country;
-        let windSpeed = info.data.wind.speed;
-        let iconId = info.data.weather[0].id;
-        let descriptor = info.data.weather[0].description.split(' ').map((word) => word[0].toUpperCase() + word.slice(1)).join(' ');
-  
-        this.setState({
-          temperature,
-          humidity,
-          location,
-          country,
-          windSpeed,
-          iconId,
-          descriptor
-        })
-  
-      }))
-      .catch((err) => {
-        console.log(err);
-      });
+    this.timerID = setInterval(
+      () => this.tick(),
+      1000
+    );
+    /////////////////////////
 
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-
-    ////////// <<<<<<<<<<<< HARD CODED LAT AND LONG UNCOMMENT CODE ABOVE TO GO BACK >>>>>>>>>>>>
-
-    // let { latitude, longitude } =  {latitude: 37.7771726, longitude: -122.4238155};
-
-    // this.setState({
-    //   latitude,
-    //   longitude
-    // })
-
-    // getWeatherByLatitudeAndLongitude(latitude, longitude)
-    // .then((info => {
-    //   console.log(info);
-
-    //   let temperature = Math.floor(info.data.main.temp);
-    //   let humidity = info.data.main.humidity;
-    //   let location = info.data.name;
-    //   let country = info.data.sys.country;
-    //   let windSpeed = info.data.wind.speed;
-    //   let iconId = info.data.weather[0].id;
-    //   let descriptor = info.data.weather[0].description.split(' ').map((word) => word[0].toUpperCase() + word.slice(1)).join(' ');
-
+    // getLatitudeAndLongitude()
+    // .then((position) => {
+    //   let { latitude, longitude } = position;
     //   this.setState({
-    //     temperature,
-    //     humidity,
-    //     location,
-    //     country,
-    //     windSpeed,
-    //     iconId,
-    //     descriptor
-    //   })
+    //     latitude,
+    //     longitude
+    //   });
+    // })
+    // .then(() => {
+    //   getWeatherByLatitudeAndLongitude(this.state.latitude, this.state.longitude)
+    //   .then((info => {
+    //     console.log(info);
+  
+    //     let temperature = Math.floor(info.data.main.temp);
+    //     let humidity = info.data.main.humidity;
+    //     let location = info.data.name;
+    //     let country = info.data.sys.country;
+    //     let windSpeed = info.data.wind.speed;
+    //     let iconId = info.data.weather[0].id;
+    //     let descriptor = info.data.weather[0].description.split(' ').map((word) => word[0].toUpperCase() + word.slice(1)).join(' ');
+  
+    //     this.setState({
+    //       temperature,
+    //       humidity,
+    //       location,
+    //       country,
+    //       windSpeed,
+    //       iconId,
+    //       descriptor
+    //     })
+  
+    //   }))
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
 
-    // }))
+    // })
     // .catch((err) => {
     //   console.log(err);
     // });
 
+    ////////// <<<<<<<<<<<< HARD CODED LAT AND LONG UNCOMMENT CODE ABOVE TO GO BACK >>>>>>>>>>>>
+
+    let { latitude, longitude } =  {latitude: 37.7771726, longitude: -122.4238155};
+
+    this.setState({
+      latitude,
+      longitude
+    })
+
+    getWeatherByLatitudeAndLongitude(latitude, longitude)
+    .then((info => {
+      console.log(info);
+
+      let temperature = Math.floor(info.data.main.temp);
+      let humidity = info.data.main.humidity;
+      let location = info.data.name;
+      let country = info.data.sys.country;
+      let windSpeed = info.data.wind.speed;
+      let iconId = info.data.weather[0].id;
+      let descriptor = info.data.weather[0].description.split(' ').map((word) => word[0].toUpperCase() + word.slice(1)).join(' ');
+
+      this.setState({
+        temperature,
+        humidity,
+        location,
+        country,
+        windSpeed,
+        iconId,
+        descriptor,
+
+      })
+
+    }))
+    .catch((err) => {
+      console.log(err);
+    });
+
   }
 
   render () {
+    let hour = this.state.date.toLocaleTimeString().split(':')[0];
+    let min = this.state.date.toLocaleTimeString().split(':')[1];
     return (
-      <div className={style.main}>
+      <div className={style.screen}>  
+              {/* clock <> */}
+              <div className={style.clock}>
+                <div className={style.clockDigitTop}>
+                  <p className={style.clockDigits}>{hour.length === 2 ? hour : '0' + hour}</p>
+                </div>
+                <div className={style.clockDigitBottom}>
+                  <p className={style.clockDigits}>{min}</p>
+                </div>
+              </div>
 
-        {/* main info<> */}
+              <div className={style.main}>
 
-        <div className={style.mainInfo}> 
+                  {/* <>main info<> */}
 
-          <div className={style.iconContainer}>
-            <i  className={[style.icon,` wi wi-owm-${this.state.iconId}`].join(' ')}></i> 
-          </div>
+                  <div className={style.mainInfo}> 
 
-          <p className={style.temperature}> 
-            {`${this.state.temperature}°`}
-          </p>
+                    <i  className={[style.icon,` wi wi-owm-${this.state.iconId}`].join(' ')}></i> 
 
-        </div>
+                    <p className={style.temperature}> 
+                      {`${this.state.temperature}°`}
+                    </p>
 
-        {/* <>detailed info<> */}
+                  </div>
 
-        <div className={style.detailedInfo}>
+                  {/* <>detailed info<> */}
 
-          <p className={style.descriptor}>
-            {this.state.descriptor}
-          </p>
+                  <div className={style.detailedInfo}>
 
-          <p className={style.location}> 
-            City | {this.state.location}
-          </p>
+                    <p className={style.descriptor}>
+                      {this.state.descriptor}
+                    </p>
 
-          <p className={style.country}> 
-            Country | {this.state.country}
-          </p>
+                    <p className={style.location}> 
+                      City | {this.state.location}
+                    </p>
 
-          <p className={style.coordinates}> 
-            Coordinates | {this.state.latitude.toString().slice(0,4)}, {this.state.longitude.toString().slice(0,4)}
-          </p>
+                    <p className={style.country}> 
+                      Country | {this.state.country}
+                    </p>
 
-          <p className={style.humidity}> 
-            Humidity | {this.state.humidity}
-          </p>
+                    <p className={style.coordinates}> 
+                      Coordinates | {this.state.latitude.toString().slice(0,4)}, {this.state.longitude.toString().slice(0,4)}
+                    </p>
 
-          <p className={style.windSpeed}> 
-            Wind Speed | {this.state.windSpeed}
-          </p>
+                    <p className={style.humidity}> 
+                      Humidity | {this.state.humidity}
+                    </p>
 
-        </div>
+                    <p className={style.windSpeed}> 
+                      Wind Speed | {this.state.windSpeed}
+                    </p>
 
+                  </div>
+
+              </div>
       </div>
     )
   }
