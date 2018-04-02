@@ -28,88 +28,85 @@ class LocalWeather extends React.Component {
     }
   }
 
-  capitalizeDescriptor() {
-
-  }
 
   componentDidMount() {
 
-    // getLatitudeAndLongitude()
-    // .then((position) => {
-    //   let { latitude, longitude } = position;
-    //   this.setState({
-    //     latitude,
-    //     longitude
-    //   });
-    // })
-    // .then(() => {
-
-    //   getWeatherByLatitudeAndLongitude(this.state.latitude, this.state.longitude)
-
-    //   .then((info => {
-    //     console.log(info);
-
-    //     let temperature = info.data.main.temp;
-    //     let humidity = info.data.main.humidity;
-    //     let location = info.data.name;
-    //     let city = info.data.sys.country;
-    //     let windSpeed = info.data.wind.speed;
-    //     let iconId = info.data.weather[0].id;
-
-    //     this.setState({
-    //       temperature,
-    //       humidity,
-    //       location,
-    //       city,
-    //       windSpeed,
-    //       iconId
-    //     })
-
-    //   }))
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-
-    // })
-    // .catch((err) => {
-    //   console.log(err);
-    // });
-
-    ////////// <<<<<<<<<<<< HARD CODED LAT AND LONG UNCOMMENT CODE ABOVE TO GO BACK >>>>>>>>>>>>
-
-    let { latitude, longitude } =  {latitude: 37.7771726, longitude: -122.4238155};
-
-    this.setState({
-      latitude,
-      longitude
-    })
-
-    getWeatherByLatitudeAndLongitude(latitude, longitude)
-    .then((info => {
-      console.log(info);
-
-      let temperature = Math.floor(info.data.main.temp);
-      let humidity = info.data.main.humidity;
-      let location = info.data.name;
-      let country = info.data.sys.country;
-      let windSpeed = info.data.wind.speed;
-      let iconId = info.data.weather[0].id;
-      let descriptor = info.data.weather[0].description.split(' ').map((word) => word[0].toUpperCase() + word.slice(1)).join(' ');
-
+    getLatitudeAndLongitude()
+    .then((position) => {
+      let { latitude, longitude } = position;
       this.setState({
-        temperature,
-        humidity,
-        location,
-        country,
-        windSpeed,
-        iconId,
-        descriptor
-      })
+        latitude,
+        longitude
+      });
+    })
+    .then(() => {
+      getWeatherByLatitudeAndLongitude(this.state.latitude, this.state.longitude)
+      .then((info => {
+        console.log(info);
+  
+        let temperature = Math.floor(info.data.main.temp);
+        let humidity = info.data.main.humidity;
+        let location = info.data.name;
+        let country = info.data.sys.country;
+        let windSpeed = info.data.wind.speed;
+        let iconId = info.data.weather[0].id;
+        let descriptor = info.data.weather[0].description.split(' ').map((word) => word[0].toUpperCase() + word.slice(1)).join(' ');
+  
+        this.setState({
+          temperature,
+          humidity,
+          location,
+          country,
+          windSpeed,
+          iconId,
+          descriptor
+        })
+  
+      }))
+      .catch((err) => {
+        console.log(err);
+      });
 
-    }))
+    })
     .catch((err) => {
       console.log(err);
     });
+
+    ////////// <<<<<<<<<<<< HARD CODED LAT AND LONG UNCOMMENT CODE ABOVE TO GO BACK >>>>>>>>>>>>
+
+    // let { latitude, longitude } =  {latitude: 37.7771726, longitude: -122.4238155};
+
+    // this.setState({
+    //   latitude,
+    //   longitude
+    // })
+
+    // getWeatherByLatitudeAndLongitude(latitude, longitude)
+    // .then((info => {
+    //   console.log(info);
+
+    //   let temperature = Math.floor(info.data.main.temp);
+    //   let humidity = info.data.main.humidity;
+    //   let location = info.data.name;
+    //   let country = info.data.sys.country;
+    //   let windSpeed = info.data.wind.speed;
+    //   let iconId = info.data.weather[0].id;
+    //   let descriptor = info.data.weather[0].description.split(' ').map((word) => word[0].toUpperCase() + word.slice(1)).join(' ');
+
+    //   this.setState({
+    //     temperature,
+    //     humidity,
+    //     location,
+    //     country,
+    //     windSpeed,
+    //     iconId,
+    //     descriptor
+    //   })
+
+    // }))
+    // .catch((err) => {
+    //   console.log(err);
+    // });
 
   }
 
