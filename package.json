@@ -1,7 +1,7 @@
 {
-  "name": "",
+  "name": "weather",
   "version": "1.0.0",
-  "description": "",
+  "description": "weather",
   "main": "index.js",
   "scripts": {
     "react-dev": "webpack -d --watch",

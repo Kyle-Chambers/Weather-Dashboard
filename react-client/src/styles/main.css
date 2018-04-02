@@ -22,7 +22,7 @@
 
 .mainInfo {
     padding-top: 188px;
-    width: 300px;
+    width: 290px;
     /* background-color: rgb(195, 110, 110); */
 }
 
@@ -30,7 +30,7 @@
     margin-top: 15px;
     font-size: 120px;
     font-family: "Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;
-    color: rgb(160, 160, 160)
+    color: rgb(169, 169, 169)
 }
 
 .icon {
@@ -38,8 +38,6 @@
     fontFamily: Arial;
     color: rgb(210, 210, 210)
 }
-
-
 
 /* detailed info */
 
@@ -65,7 +63,7 @@ p {
 .clock {
     padding-top: 260px;
     /* background-color: red; */
-    width: 320px;
+    width: 340px;
 }
 
 .clockDigits {
