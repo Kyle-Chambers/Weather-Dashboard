@@ -74,7 +74,7 @@ class LocalWeather extends React.Component {
   
       }))
       .catch((err) => {
-        console.log(err);Andrea Ellison
+        console.log(err);
       });
 
     })
